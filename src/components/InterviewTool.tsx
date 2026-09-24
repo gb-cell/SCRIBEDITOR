@@ -109,7 +109,9 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
       : "Traitement du verbatim en cours…";
 
   const resultLabel =
-    mode === "correction" ? "REMARQUES DE CORRECTION" : "VERBATIM NETTOYÉ";
+    mode === "correction"
+      ? "REMARQUES DE CORRECTION"
+      : "VERBATIM — INTERVIEW APRÈS COURSE";
 
   return (
     <div className="shell">
@@ -184,16 +186,17 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                   aria-disabled="true"
                   title="prompt 04D en attente de validation"
                 >
-                  INTERVIEW — QUESTIONS / RÉPONSES
+                  Q / R — BIENTÔT
                 </button>
               </div>
               {mode === "correction" ? (
                 <p className="mode-hint" role="status">
-                  Mode 03B — remarques de relecture (pas une réécriture complète)
+                  Relecture 03B : fautes, coquilles, maladresses (pas une réécriture
+                  complète).
                 </p>
               ) : (
                 <p className="mode-hint" role="status">
-                  Mode INTERVIEW désactivé — prompt 04D en attente de validation
+                  Transforme un transcript en verbatim à la 1ʳᵉ personne.
                 </p>
               )}
             </fieldset>
