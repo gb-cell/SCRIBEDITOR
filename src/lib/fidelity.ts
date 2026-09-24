@@ -22,13 +22,16 @@ Corrige les erreurs CLAIRES de fidélité dans le texte produit :
 - informations présentes SEULEMENT dans les questions du journaliste et placées dans la bouche de l'intervenant (ex. détails de la question non confirmés dans la réponse) ;
 - formulations encore à la 3ᵉ personne du type « Il explique que… », « Elle dit que… » alors que le mode demandé est un verbatim à la 1ʳᵉ personne : transforme-les en 1ʳᵉ personne SI le sens est clair, sinon laisse et signale ;
 - nuances de certitude transformées en affirmations (« peut-être » → affirmation certaine, etc.) ;
-- citations ou propos non présents dans l'original.
+- citations ou propos non présents dans l'original ;
+- noms de chevaux / jockeys / entraîneurs / propriétaires / hippodromes / courses dont l'orthographe a été « corrigée », remplacée par un quasi-homonyme, ou normalisée par rapport au transcript : restaure EXACTEMENT la graphie du transcript original (majuscules, traits d'union, accents inclus).
 
 Règles strictes :
 - Si le texte produit est déjà fidèle et déjà à la 1ʳᵉ personne, renvoie-le STRICTEMENT INCHANGÉ dans correctedText.
 - Ne « polish » pas, ne reformule pas pour le style.
 - Ne raccourcis pas le texte sans raison de fidélité.
 - Ne rajoute aucune information absente de l'original.
+- Ne remplace jamais un nom de cheval par un nom « plus célèbre » ou « plus probable ».
+- En cas de doute sur un nom propre, signale-le dans passagesAVerifier sans inventer une autre graphie.
 
 Réponds UNIQUEMENT en JSON valide, sans markdown :
 {

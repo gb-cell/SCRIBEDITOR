@@ -64,6 +64,7 @@ export async function processVerbatim(
             "Applique strictement le prompt maître (message system) ET les consignes 04B ci-dessus.",
             "Le résultat doit être ENTIÈREMENT à la première personne (je / j' / mon / ma / mes).",
             "Interdit de laisser des formulations du type « Il explique que… », « Elle dit que… ».",
+            "Noms de chevaux et noms propres : reproduis EXACTEMENT l'orthographe du matériau. N'« améliore » jamais un nom.",
             "Ne renvoie que le verbatim finalisé, sans préambule, sans titre, sans commentaire.",
             "",
             "Matériau à transformer :",

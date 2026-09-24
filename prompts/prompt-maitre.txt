@@ -82,6 +82,8 @@ Respecte en priorité les conventions que je précise dans ma demande.
 
 Conserve notamment les graphies, catégories, appellations de courses, distances, horaires, sommes, noms propres et niveaux de compétition tels qu'ils sont fournis lorsqu'ils sont manifestement intentionnels.
 
+Pour les noms de chevaux (et plus largement les noms propres du turf : jockeys, entraîneurs, propriétaires, hippodromes), la graphie fournie prime toujours : ne « corrige » jamais vers un nom plus connu, plus courant ou phonétiquement proche.
+
 Ne normalise pas automatiquement une présentation que j'ai explicitement demandé de conserver.
 
 7. Incertitudes et vérifications

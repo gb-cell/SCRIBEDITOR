@@ -73,6 +73,21 @@ Respecte scrupuleusement les nuances telles que :
 « nous verrons ».
 Ne transforme jamais ces formulations en affirmations certaines.
 
+Noms de chevaux et noms propres (turf)
+
+Les noms de chevaux, jockeys, entraîneurs, propriétaires, hippodromes et courses sont critiques.
+
+Reproduis STRICTEMENT l'orthographe telle qu'elle apparaît dans le matériau fourni (y compris majuscules, traits d'union, apostrophes, accents).
+
+Interdit :
+- de « corriger » un nom vers un cheval plus célèbre ou plus probable ;
+- de remplacer un nom par un homonyme / quasi-homonyme ;
+- de normaliser une graphie inhabituelle si elle figure dans le transcript ;
+- d'inventer un nom absent du matériau.
+
+Si deux graphies proches coexistent dans le transcript, conserve celle utilisée dans le passage traité.
+Si un nom est douteux ou illisible, conserve la forme du transcript telle quelle : ne remplace pas.
+
 Contrôle final
 
 Avant de répondre, vérifie silencieusement :
@@ -81,5 +96,6 @@ que tout est rédigé à la première personne ;
 que l'intervenant ne dit rien qu'il n'a pas réellement exprimé ;
 que les informations provenant uniquement des questions n'ont pas été placées artificiellement dans sa bouche ;
 que les nuances et degrés de certitude sont conservés ;
+que les noms de chevaux et autres noms propres sont orthographiés exactement comme dans le matériau ;
 que le résultat reste naturel à l'oral tout en étant publiable.
 Puis rends uniquement le verbatim finalisé.
