@@ -79,16 +79,18 @@ Si une catégorie ne contient rien, ne l'affiche pas.
 
 6. Niveau d'exigence
 
-Sois attentif, mais pas tatillon.
+Sois attentif aux fautes objectives : une faute d'orthographe, d'accord, de conjugaison ou une coquille DOIT être signalée.
 
-Ne cherche pas à produire artificiellement des corrections.
+Ne sois pas tatillon sur le style : ne signale pas une phrase seulement parce que tu aurais choisi une autre formulation.
 
 Ne transforme pas les préférences stylistiques en règles.
+
+Ne réponds « Aucune remarque » QUE si le texte ne contient réellement aucune faute objective ni maladresse sérieuse.
 
 L'objectif est d'identifier ce qui améliorerait réellement le texte avant publication.
 
 Contrôle final
 
-Avant de répondre, vérifie silencieusement que chaque remarque est réellement utile.
+Avant de répondre, vérifie silencieusement que chaque remarque est réellement utile, ET que tu n'as pas omis une faute d'orthographe ou de grammaire évidente.
 
 La qualité de la relecture compte davantage que le nombre de remarques.
