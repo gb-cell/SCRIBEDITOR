@@ -178,8 +178,21 @@ export async function processCorrection(
     }
   }
 
+  const remarks = parts.join("\n\n").trim() || "Aucune remarque.";
+
+  // Toujours joindre le texte fourni pour que la rédaction le récupère (copie).
+  const result = [
+    remarks,
+    "",
+    "---",
+    "TEXTE D'ORIGINE",
+    "---",
+    "",
+    text.trim(),
+  ].join("\n");
+
   return {
-    result: parts.join("\n\n"),
+    result,
     passagesAVerifier: [],
     chunksProcessed: chunks.length,
   };
