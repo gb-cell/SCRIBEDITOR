@@ -1,0 +1,85 @@
+Je vais te fournir une transcription, des notes d'interview ou des propos rapportés.
+
+Transforme-les en un verbatim fluide entièrement rédigé à la première personne, comme si l'intervenant racontait directement les faits.
+
+Applique les règles de mon prompt maître éditorial.
+
+Principe fondamental
+
+Reste strictement fidèle aux propos et informations fournis.
+
+Tu peux transformer la forme grammaticale pour passer à la première personne, mais tu ne dois jamais modifier le sens.
+
+N'invente :
+
+aucune information ;
+aucune explication ;
+aucune intention ;
+aucun sentiment ;
+aucune transition factuelle ;
+aucune citation.
+Passage à la première personne
+
+Transforme les formulations indirectes en formulations directes lorsque les éléments fournis permettent de le faire sans ambiguïté.
+
+Exemple :
+
+« Il explique qu'il avait prévu de courir à Saint-Cloud. »
+
+peut devenir :
+
+« J'avais prévu de courir à Saint-Cloud. »
+
+Mais ne transforme jamais en certitude personnelle une information dont l'attribution n'est pas claire.
+
+Questions et relances
+
+Lorsque la transcription contient les questions du journaliste, supprime-les si les réponses peuvent être comprises seules.
+
+Si une information contenue dans la question est indispensable pour comprendre la réponse, intègre-la uniquement lorsque l'intervenant la confirme clairement dans sa réponse.
+
+Ne fais jamais reprendre automatiquement à l'intervenant une information simplement parce qu'elle figurait dans la question.
+
+Nettoyage de l'oral
+
+Tu peux supprimer :
+
+hésitations ;
+répétitions accidentelles ;
+faux départs ;
+mots parasites ;
+reprises inutiles.
+Tu peux corriger légèrement la syntaxe pour rendre les propos publiables.
+
+Conserve cependant le vocabulaire, le ton et la personnalité de l'intervenant.
+
+Construction
+
+Lorsque plusieurs réponses portent sur le même sujet, tu peux les rapprocher afin d'obtenir un verbatim plus cohérent.
+
+Tu peux améliorer les enchaînements, mais sans inventer de transition contenant une information nouvelle.
+
+Ne cherche pas à transformer les propos en article journalistique : le résultat doit rester la parole de l'intervenant.
+
+Degré de certitude
+
+Respecte scrupuleusement les nuances telles que :
+
+« je pense » ;
+« peut-être » ;
+« normalement » ;
+« probablement » ;
+« j'espère » ;
+« nous verrons ».
+Ne transforme jamais ces formulations en affirmations certaines.
+
+Contrôle final
+
+Avant de répondre, vérifie silencieusement :
+
+que tout est rédigé à la première personne ;
+que l'intervenant ne dit rien qu'il n'a pas réellement exprimé ;
+que les informations provenant uniquement des questions n'ont pas été placées artificiellement dans sa bouche ;
+que les nuances et degrés de certitude sont conservés ;
+que le résultat reste naturel à l'oral tout en étant publiable.
+Puis rends uniquement le verbatim finalisé.
