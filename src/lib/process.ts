@@ -2,7 +2,7 @@ import { chunkTranscript, type ProcessMode } from "./chunking";
 import { getModel } from "./config";
 import { runFidelityCheck, type FidelityResult } from "./fidelity";
 import { getOpenAIClient } from "./openai";
-import { loadMasterPrompt, loadPrompt04B } from "./prompts";
+import { loadMasterPrompt, loadPrompt03B, loadPrompt04B } from "./prompts";
 
 export type ProcessResult = {
   result: string;
@@ -48,7 +48,6 @@ export async function processVerbatim(
         ? `\n\n(Partie ${i + 1}/${chunks.length} du transcript — traite uniquement cette partie, sans résumé ni conclusion ajoutés.)`
         : "";
 
-    // Maître = règles éditoriales (system). 04B = consigne de tâche + matériau (user).
     const response = await client.chat.completions.create({
       model,
       temperature: 0.2,
@@ -100,6 +99,89 @@ export async function processVerbatim(
   };
 }
 
+/**
+ * Mode 03B — CORRECTION (fautes, coquilles, maladresses).
+ * Maître + 03B → remarques structurées. Pas de contrôle de fidélité verbatim.
+ */
+export async function processCorrection(
+  text: string
+): Promise<ProcessResult> {
+  const master = loadMasterPrompt();
+  const prompt03B = loadPrompt03B();
+
+  if (!master || master.length < 100) {
+    throw new Error(
+      "Prompt maître introuvable ou incomplet (prompts/prompt-maitre.txt)."
+    );
+  }
+  if (!prompt03B || prompt03B.length < 100) {
+    throw new Error(
+      "Prompt 03B introuvable ou incomplet (prompts/prompt-03B.txt)."
+    );
+  }
+
+  const chunks = chunkTranscript(text, "correction");
+  if (chunks.length === 0) {
+    throw new Error("Le transcript est vide.");
+  }
+
+  const client = getOpenAIClient();
+  const model = getModel();
+  const parts: string[] = [];
+
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    const multi =
+      chunks.length > 1
+        ? `\n\n(Partie ${i + 1}/${chunks.length} du texte — relis uniquement cette partie. Si une catégorie est vide pour cette partie, ne l'affiche pas.)`
+        : "";
+
+    const response = await client.chat.completions.create({
+      model,
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: master },
+        {
+          role: "user",
+          content: [
+            prompt03B,
+            "",
+            "---",
+            "",
+            "Applique strictement le prompt maître (message system) ET les consignes 03B ci-dessus.",
+            "Ne réécris pas le texte en entier : fournis uniquement les remarques au format demandé.",
+            "Noms de chevaux et noms propres : signale une correction d'orthographe seulement si elle est objectivement fautive dans le texte ; ne « corrige » pas vers un nom plus célèbre.",
+            "Si tu ne trouves aucune remarque utile, réponds exactement : Aucune remarque.",
+            "",
+            "Texte à relire :",
+            "",
+            chunk + multi,
+          ].join("\n"),
+        },
+      ],
+    });
+
+    const content = response.choices[0]?.message?.content?.trim();
+    if (!content) {
+      throw new Error(
+        `Le modèle n'a renvoyé aucun texte pour la partie ${i + 1}/${chunks.length}.`
+      );
+    }
+    const cleaned = stripModelChrome(content);
+    if (chunks.length > 1) {
+      parts.push(`### Partie ${i + 1}/${chunks.length}\n\n${cleaned}`);
+    } else {
+      parts.push(cleaned);
+    }
+  }
+
+  return {
+    result: parts.join("\n\n"),
+    passagesAVerifier: [],
+    chunksProcessed: chunks.length,
+  };
+}
+
 /** Retire titres / formules du type « Voici le verbatim : » si le modèle en ajoute. */
 function stripModelChrome(text: string): string {
   return text
@@ -114,7 +196,6 @@ function stripModelChrome(text: string): string {
 
 /**
  * Filet de sécurité aligné sur 04B : reformulations indirectes évidentes → 1ʳᵉ personne.
- * Ne touche que des motifs explicites (pas d'invention).
  */
 function applySafeFirstPersonFixes(text: string): string {
   let out = text;

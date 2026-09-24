@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import type { ProcessMode } from "@/lib/chunking";
 import { isAllowedEmail, isAuthDisabled } from "@/lib/auth-access";
-import { assertModeAvailable, processVerbatim } from "@/lib/process";
+import { assertModeAvailable, processCorrection, processVerbatim } from "@/lib/process";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -115,7 +115,11 @@ export async function POST(request: Request) {
     );
   }
 
-  if (mode !== "verbatim" && mode !== "interview") {
+  if (
+    mode !== "verbatim" &&
+    mode !== "correction" &&
+    mode !== "interview"
+  ) {
     return NextResponse.json(
       { error: "Mode de traitement non reconnu." },
       { status: 400 }
@@ -129,6 +133,16 @@ export async function POST(request: Request) {
       const result = await processVerbatim(transcript);
 
       // Aucun log du contenu — on ne persiste rien côté serveur.
+      return NextResponse.json({
+        result: result.result,
+        passagesAVerifier: result.passagesAVerifier,
+        chunksProcessed: result.chunksProcessed,
+      });
+    }
+
+    if (mode === "correction") {
+      const result = await processCorrection(transcript);
+
       return NextResponse.json({
         result: result.result,
         passagesAVerifier: result.passagesAVerifier,

@@ -3,7 +3,7 @@
 import { useCallback, useState, type ReactNode } from "react";
 import { RacingScene } from "@/components/RacingScene";
 
-type Mode = "verbatim" | "interview";
+type Mode = "verbatim" | "correction" | "interview";
 type Screen = "input" | "result";
 
 type InterviewToolProps = {
@@ -17,7 +17,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
   const [originalTranscript, setOriginalTranscript] = useState<string | null>(
     null
   );
-  const [mode] = useState<Mode>("verbatim");
+  const [mode, setMode] = useState<Mode>("verbatim");
   const [screen, setScreen] = useState<Screen>("input");
   const [resultText, setResultText] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -29,7 +29,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
   const handleProcess = useCallback(async () => {
     const source = transcript.trim();
     if (!source) {
-      setError("Veuillez coller un transcript avant de lancer le traitement.");
+      setError("Veuillez coller un texte avant de lancer le traitement.");
       return;
     }
 
@@ -60,7 +60,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
       if (!response.ok || !data.result) {
         setError(
           data.error ||
-            "Une erreur est survenue pendant le traitement. Votre transcript n'a pas été modifié."
+            "Une erreur est survenue pendant le traitement. Votre texte n'a pas été modifié."
         );
         return;
       }
@@ -93,6 +93,24 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
     setCopyFeedback(false);
   }, []);
 
+  const inputLabel =
+    mode === "correction"
+      ? "Collez le texte à relire (article, brève, verbatim…)."
+      : "Collez votre retranscription brute.";
+
+  const inputPlaceholder =
+    mode === "correction"
+      ? "Texte à corriger avant publication…"
+      : "Transcription, notes d'interview ou propos rapportés…";
+
+  const processingLabel =
+    mode === "correction"
+      ? "Relecture en cours…"
+      : "Traitement du verbatim en cours…";
+
+  const resultLabel =
+    mode === "correction" ? "REMARQUES DE CORRECTION" : "VERBATIM NETTOYÉ";
+
   return (
     <div className="shell">
       <div className="shell-bg" aria-hidden="true" />
@@ -123,9 +141,9 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         </header>
 
         {screen === "input" ? (
-          <section className="panel" aria-label="Saisie du transcript">
+          <section className="panel" aria-label="Saisie du texte">
             <label className="label" htmlFor="transcript">
-              Collez votre retranscription brute.
+              {inputLabel}
             </label>
             <textarea
               id="transcript"
@@ -135,7 +153,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 setTranscript(e.target.value);
                 if (error) setError(null);
               }}
-              placeholder="Transcription, notes d'interview ou propos rapportés…"
+              placeholder={inputPlaceholder}
               disabled={processing}
               spellCheck
             />
@@ -145,10 +163,19 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               <div className="mode-row">
                 <button
                   type="button"
-                  className="mode-btn active"
-                  aria-pressed={true}
+                  className={`mode-btn${mode === "verbatim" ? " active" : ""}`}
+                  aria-pressed={mode === "verbatim"}
+                  onClick={() => setMode("verbatim")}
                 >
-                  VERBATIM — PREMIÈRE PERSONNE
+                  INTERVIEW APRÈS COURSE
+                </button>
+                <button
+                  type="button"
+                  className={`mode-btn${mode === "correction" ? " active" : ""}`}
+                  aria-pressed={mode === "correction"}
+                  onClick={() => setMode("correction")}
+                >
+                  CORRECTION — FAUTES &amp; COQUILLES
                 </button>
                 <button
                   type="button"
@@ -160,9 +187,15 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                   INTERVIEW — QUESTIONS / RÉPONSES
                 </button>
               </div>
-              <p className="mode-hint" role="status">
-                Mode INTERVIEW désactivé — prompt 04D en attente de validation
-              </p>
+              {mode === "correction" ? (
+                <p className="mode-hint" role="status">
+                  Mode 03B — remarques de relecture (pas une réécriture complète)
+                </p>
+              ) : (
+                <p className="mode-hint" role="status">
+                  Mode INTERVIEW désactivé — prompt 04D en attente de validation
+                </p>
+              )}
             </fieldset>
 
             {error && (
@@ -178,15 +211,13 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 onClick={handleProcess}
                 disabled={!canSubmit}
               >
-                {processing
-                  ? "Traitement du verbatim en cours…"
-                  : "TRAITER"}
+                {processing ? processingLabel : "TRAITER"}
               </button>
             </div>
 
             {originalTranscript !== null && !processing && (
               <p className="session-note">
-                Transcript d&apos;origine conservé en mémoire de session (non
+                Texte d&apos;origine conservé en mémoire de session (non
                 enregistré sur le serveur).
               </p>
             )}
@@ -196,7 +227,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
             <div className="result-head">
               <span className="finish-dot" aria-hidden="true" />
               <label className="label-caps" htmlFor="result">
-                VERBATIM NETTOYÉ
+                {resultLabel}
               </label>
             </div>
             <textarea

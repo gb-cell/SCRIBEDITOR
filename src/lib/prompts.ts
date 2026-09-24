@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import {
+  EMBEDDED_03B,
   EMBEDDED_04B,
   EMBEDDED_04D,
   EMBEDDED_MASTER,
@@ -10,7 +11,6 @@ const PROMPTS_DIR = path.join(process.cwd(), "prompts");
 
 /**
  * Lit le fichier local si présent (dev), sinon le prompt embarqué (Vercel).
- * Sur Vercel, les fichiers /prompts ne sont pas toujours dans le bundle serverless.
  */
 function readPrompt(
   filename: string,
@@ -39,7 +39,11 @@ export function loadPrompt04B(): string {
   return readPrompt("prompt-04B.txt", EMBEDDED_04B, 100);
 }
 
-/** Placeholder only — Mode 2 not ready until 04D is validated. */
+export function loadPrompt03B(): string {
+  return readPrompt("prompt-03B.txt", EMBEDDED_03B, 100);
+}
+
+/** Placeholder only — Mode INTERVIEW not ready until 04D is validated. */
 export function loadPrompt04DPlaceholder(): string {
   return readPrompt("prompt-04D.txt", EMBEDDED_04D, 20);
 }

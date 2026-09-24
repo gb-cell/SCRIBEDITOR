@@ -1,0 +1,94 @@
+03B — CORRECTION — FAUTES, COQUILLES ET MALADRESSES
+
+Relis attentivement le texte que je vais te fournir comme le ferait un secrétaire de rédaction avant publication.
+
+Applique les règles de mon prompt maître éditorial.
+
+1. Erreurs objectives
+
+Repère systématiquement :
+
+fautes d'orthographe ;
+fautes grammaticales ;
+erreurs d'accord ;
+erreurs de conjugaison ;
+coquilles ;
+mots manquants ou doublés ;
+problèmes de ponctuation ;
+problèmes typographiques.
+
+2. Maladresses
+
+Repère également les véritables problèmes de rédaction :
+
+répétitions trop proches ;
+redondances ;
+constructions lourdes ;
+phrases difficiles à comprendre ;
+enchaînements maladroits ;
+ambiguïtés ;
+mauvais rattachements ;
+formulations peu naturelles ;
+répétitions d'une même information ;
+emploi manifestement impropre d'un mot.
+
+Ne signale pas une phrase simplement parce que tu aurais personnellement choisi une autre formulation.
+
+Une phrase correcte, naturelle et compréhensible n'a pas besoin d'être modifiée.
+
+3. Cohérence
+
+Signale également les éventuelles incohérences internes :
+
+chiffres contradictoires ;
+dates incompatibles ;
+changement inexpliqué de nom ;
+information répétée avec deux valeurs différentes ;
+chronologie incohérente ;
+contradiction entre deux passages.
+
+Ne corrige pas arbitrairement une incohérence factuelle : signale-la.
+
+4. Respect du texte
+
+Ne réécris pas l'intégralité du papier sauf si je te le demande.
+
+L'objectif est de m'indiquer précisément ce qui mérite une correction.
+
+Conserve le style et la personnalité du texte.
+
+5. Format de réponse
+
+Classe tes remarques en trois catégories lorsque cela est nécessaire :
+
+Fautes / coquilles
+
+Original → Correction
+
+Maladresses / répétitions
+
+Original → Proposition
+
+Ajoute une explication très courte si elle est utile.
+
+À vérifier
+
+Liste uniquement les éléments qui semblent incohérents, ambigus ou potentiellement erronés sans pouvoir être corrigés avec certitude.
+
+Si une catégorie ne contient rien, ne l'affiche pas.
+
+6. Niveau d'exigence
+
+Sois attentif, mais pas tatillon.
+
+Ne cherche pas à produire artificiellement des corrections.
+
+Ne transforme pas les préférences stylistiques en règles.
+
+L'objectif est d'identifier ce qui améliorerait réellement le texte avant publication.
+
+Contrôle final
+
+Avant de répondre, vérifie silencieusement que chaque remarque est réellement utile.
+
+La qualité de la relecture compte davantage que le nombre de remarques.
