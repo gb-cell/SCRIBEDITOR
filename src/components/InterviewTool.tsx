@@ -95,7 +95,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
 
   const inputLabel =
     mode === "correction"
-      ? "Collez le texte à relire (article, brève, verbatim…)."
+      ? "Collez le texte à corriger (article, brève, verbatim…)."
       : "Collez votre retranscription brute.";
 
   const inputPlaceholder =
@@ -105,12 +105,12 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
 
   const processingLabel =
     mode === "correction"
-      ? "Relecture en cours…"
+      ? "Correction du texte en cours…"
       : "Traitement du verbatim en cours…";
 
   const resultLabel =
     mode === "correction"
-      ? "REMARQUES DE CORRECTION"
+      ? "TEXTE CORRIGÉ"
       : "VERBATIM — INTERVIEW APRÈS COURSE";
 
   return (
@@ -177,7 +177,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                   aria-pressed={mode === "correction"}
                   onClick={() => setMode("correction")}
                 >
-                  CORRECTION — FAUTES &amp; COQUILLES
+                  CORRECTION — TEXTE INTÉGRAL
                 </button>
                 <button
                   type="button"
@@ -191,8 +191,8 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               </div>
               {mode === "correction" ? (
                 <p className="mode-hint" role="status">
-                  Relecture 03B : fautes, coquilles, maladresses (pas une réécriture
-                  complète).
+                  Réécrit le texte en entier, correctement (fautes, coquilles,
+                  maladresses).
                 </p>
               ) : (
                 <p className="mode-hint" role="status">

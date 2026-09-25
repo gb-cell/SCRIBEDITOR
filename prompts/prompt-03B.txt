@@ -4,9 +4,11 @@ Relis attentivement le texte que je vais te fournir comme le ferait un secrétai
 
 Applique les règles de mon prompt maître éditorial.
 
-1. Erreurs objectives
+Ta mission : renvoyer le TEXTE COMPLET, réécrit correctement de bout en bout.
 
-Repère systématiquement :
+1. Corrections obligatoires
+
+Corrige systématiquement dans le texte :
 
 fautes d'orthographe ;
 fautes grammaticales ;
@@ -19,7 +21,7 @@ problèmes typographiques.
 
 2. Maladresses
 
-Repère également les véritables problèmes de rédaction :
+Corrige également les véritables problèmes de rédaction lorsqu'ils nuisent à la clarté :
 
 répétitions trop proches ;
 redondances ;
@@ -29,68 +31,46 @@ enchaînements maladroits ;
 ambiguïtés ;
 mauvais rattachements ;
 formulations peu naturelles ;
-répétitions d'une même information ;
 emploi manifestement impropre d'un mot.
 
-Ne signale pas une phrase simplement parce que tu aurais personnellement choisi une autre formulation.
-
-Une phrase correcte, naturelle et compréhensible n'a pas besoin d'être modifiée.
+Ne reformule pas une phrase correcte, naturelle et compréhensible uniquement pour « faire plus beau ».
 
 3. Cohérence
 
-Signale également les éventuelles incohérences internes :
-
-chiffres contradictoires ;
-dates incompatibles ;
-changement inexpliqué de nom ;
-information répétée avec deux valeurs différentes ;
-chronologie incohérente ;
-contradiction entre deux passages.
-
-Ne corrige pas arbitrairement une incohérence factuelle : signale-la.
+Si tu détectes une incohérence factuelle (chiffres contradictoires, dates incompatibles, noms qui changent sans raison, etc.) :
+- ne l'invente pas ni ne l'arbitre silencieusement ;
+- conserve la formulation la plus fidèle au texte fourni ;
+- tu peux signaler très brièvement le doute APRÈS le texte corrigé, sous une rubrique « À vérifier », uniquement si nécessaire.
 
 4. Respect du texte
 
-Ne réécris pas l'intégralité du papier sauf si je te le demande.
+Conserve le style, le ton et la personnalité du texte.
 
-L'objectif est de m'indiquer précisément ce qui mérite une correction.
+Ne transforme pas l'article en un autre papier.
+Ne rajoute aucune information absente.
+Ne supprime aucune information utile, sauf doublon évident ou coquille.
 
-Conserve le style et la personnalité du texte.
+Noms de chevaux et noms propres : conserve la graphie fournie sauf coquille orthographique objective évidente. Ne remplace jamais par un nom « plus célèbre ».
 
 5. Format de réponse
 
-Classe tes remarques en trois catégories lorsque cela est nécessaire :
+Renvoie UNIQUEMENT :
+1) le texte intégral corrigé (du début à la fin) ;
+2) éventuellement, après une ligne vide et le titre « À vérifier », une liste très courte de points ambigus — seulement s'il y en a.
 
-Fautes / coquilles
-
-Original → Correction
-
-Maladresses / répétitions
-
-Original → Proposition
-
-Ajoute une explication très courte si elle est utile.
-
-À vérifier
-
-Liste uniquement les éléments qui semblent incohérents, ambigus ou potentiellement erronés sans pouvoir être corrigés avec certitude.
-
-Si une catégorie ne contient rien, ne l'affiche pas.
+Pas de liste « Original → Correction ».
+Pas de préambule (« Voici le texte corrigé »).
+Pas de commentaire sur ton travail.
 
 6. Niveau d'exigence
 
-Sois attentif aux fautes objectives : une faute d'orthographe, d'accord, de conjugaison ou une coquille DOIT être signalée.
-
-Ne sois pas tatillon sur le style : ne signale pas une phrase seulement parce que tu aurais choisi une autre formulation.
-
-Ne transforme pas les préférences stylistiques en règles.
-
-Ne réponds « Aucune remarque » QUE si le texte ne contient réellement aucune faute objective ni maladresse sérieuse.
-
-L'objectif est d'identifier ce qui améliorerait réellement le texte avant publication.
+Sois attentif aux fautes objectives.
+Ne sois pas tatillon sur le style.
+Le résultat doit être publiable et complet.
 
 Contrôle final
 
-Avant de répondre, vérifie silencieusement que chaque remarque est réellement utile, ET que tu n'as pas omis une faute d'orthographe ou de grammaire évidente.
-
-La qualité de la relecture compte davantage que le nombre de remarques.
+Avant de répondre, vérifie silencieusement :
+- que le texte corrigé est INTÉGRAL (rien n'a été omis) ;
+- que les fautes objectives ont été corrigées ;
+- qu'aucune information n'a été inventée.

@@ -149,14 +149,13 @@ export async function processCorrection(
             "---",
             "",
             "Applique strictement le prompt maître (message system) ET les consignes 03B ci-dessus.",
-            "Mission prioritaire de CE mode : relecture secrétaire de rédaction — fautes, coquilles, accords, conjugaison, ponctuation.",
-            "Signale TOUTE faute d'orthographe, de grammaire, d'accord ou de conjugaison objectivement présente.",
-            "Exemple attendu : « avan » → « avant » ; « c'étai » → « c'était » ; accords pluriel/singulier erronés, etc.",
-            "Ne réécris pas le texte en entier : fournis uniquement les remarques au format demandé (Fautes / coquilles, Maladresses, À vérifier).",
-            "Noms de chevaux : ne « corrige » pas vers un nom plus célèbre ; signale seulement une coquille évidente dans le texte.",
-            "Réponds « Aucune remarque » UNIQUEMENT si le texte est réellement sans faute objective.",
+            "Mission : renvoyer le TEXTE INTÉGRAL corrigé (orthographe, grammaire, accords, conjugaison, coquilles, maladresses utiles).",
+            "Ne fournis PAS une liste de remarques. Fournis le texte complet, correctement écrit, du début à la fin.",
+            "Conserve le style et toutes les informations utiles. N'invente rien.",
+            "Noms de chevaux : ne remplace pas par un nom plus célèbre ; corrige seulement une coquille évidente.",
+            "Pas de préambule. Si besoin, une rubrique « À vérifier » UNIQUEMENT après le texte.",
             "",
-            "Texte à relire :",
+            "Texte à corriger :",
             "",
             chunk + multi,
           ].join("\n"),
@@ -178,11 +177,14 @@ export async function processCorrection(
     }
   }
 
-  const remarks = parts.join("\n\n").trim() || "Aucune remarque.";
+  const corrected = parts.join("\n\n").trim();
+  if (!corrected) {
+    throw new Error("Le modèle n'a renvoyé aucun texte corrigé.");
+  }
 
-  // Toujours joindre le texte fourni pour que la rédaction le récupère (copie).
+  // Texte corrigé en premier ; original conservé en bas pour comparaison.
   const result = [
-    remarks,
+    corrected,
     "",
     "---",
     "TEXTE D'ORIGINE",
