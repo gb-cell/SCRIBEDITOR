@@ -9,9 +9,11 @@ export type ProcessResult = {
   chunksProcessed: number;
 };
 
+const REFUSAL_RE =
+  /je (ne )?peux pas|je suis désolé|manque des informations|texte ne soit pas complet|pourrais-tu (me )?fournir|extrait plus détaillé|je ne suis pas en mesure/i;
+
 /**
  * Interview après course : prompt maître (system) + 04B + matériau (user).
- * Aucune consigne ajoutée — les fichiers prompts sont appliqués à la lettre.
  */
 export async function processVerbatim(
   transcript: string
@@ -41,31 +43,32 @@ export async function processVerbatim(
 
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
-    // Note technique minimale si découpage (pas une consigne éditoriale).
     const material =
       chunks.length > 1
         ? `${chunk}\n\n[Partie ${i + 1}/${chunks.length}]`
         : chunk;
 
-    const response = await client.chat.completions.create({
-      model,
-      temperature: 0.2,
-      messages: [
-        { role: "system", content: master },
-        {
-          role: "user",
-          content: `${prompt04B}\n\n---\n\n${material}`,
-        },
-      ],
-    });
+    let content = await runChunk(client, model, master, prompt04B, material);
 
-    const content = response.choices[0]?.message?.content?.trim();
-    if (!content) {
-      throw new Error(
-        `Le modèle n'a renvoyé aucun texte pour la partie ${i + 1}/${chunks.length}.`
+    // Si le modèle refuse (comportement hors prompt), un second passage forcé.
+    if (REFUSAL_RE.test(content)) {
+      content = await runChunk(
+        client,
+        model,
+        master,
+        prompt04B,
+        material,
+        true
       );
     }
-    parts.push(stripFence(content));
+
+    if (!content || REFUSAL_RE.test(content)) {
+      throw new Error(
+        "Le modèle a refusé de traiter ce transcript. Réessayez ou allongez légèrement le texte."
+      );
+    }
+
+    parts.push(content);
   }
 
   return {
@@ -75,7 +78,35 @@ export async function processVerbatim(
   };
 }
 
-/** Retire uniquement les fences markdown éventuelles — pas de réécriture éditoriale. */
+async function runChunk(
+  client: ReturnType<typeof getOpenAIClient>,
+  model: string,
+  master: string,
+  prompt04B: string,
+  material: string,
+  force = false
+): Promise<string> {
+  const forceLine = force
+    ? "\n\nRAPPEL : produis immédiatement le verbatim. Aucun refus, aucune question, aucun commentaire."
+    : "";
+
+  const response = await client.chat.completions.create({
+    model,
+    temperature: force ? 0.1 : 0.2,
+    messages: [
+      { role: "system", content: master },
+      {
+        role: "user",
+        content: `${prompt04B}\n\n---\n\n${material}${forceLine}`,
+      },
+    ],
+  });
+
+  const raw = response.choices[0]?.message?.content?.trim() ?? "";
+  return stripFence(raw);
+}
+
+/** Retire uniquement les fences markdown éventuelles. */
 function stripFence(text: string): string {
   return text
     .replace(/^```(?:text|markdown)?\s*/i, "")
