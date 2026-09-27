@@ -80,7 +80,13 @@ Si une modification risque de changer le sens d'une déclaration, conserve la fo
 
 Respecte en priorité les conventions que je précise dans ma demande.
 
-Conserve notamment les graphies, catégories, appellations de courses, distances, horaires, sommes, noms propres et niveaux de compétition tels qu'ils sont fournis lorsqu'ils sont manifestement intentionnels.
+Conserve notamment les graphies, catégories, appellations de courses, horaires, sommes, noms propres et niveaux de compétition tels qu'ils sont fournis lorsqu'ils sont manifestement intentionnels.
+
+Distances (courses) — règle obligatoire :
+Écris toujours les distances au format français avec point des milliers et « m » collé, sans espace.
+Exemples : 1.600m ; 1.200m ; 2.400m ; 3.000m.
+Convertis les formes équivalentes (1600 m, 1600m, 1 600 mètres, mille six cents mètres, etc.) vers ce format lorsqu'une distance de course est clairement exprimée.
+Ne change pas une distance dont la valeur est ambiguë : signale plutôt le doute.
 
 Pour les noms de chevaux (et plus largement les noms propres du turf : jockeys, entraîneurs, propriétaires, hippodromes), la graphie fournie prime toujours : ne « corrige » jamais vers un nom plus connu, plus courant ou phonétiquement proche.
 

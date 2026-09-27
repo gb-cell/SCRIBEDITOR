@@ -88,6 +88,10 @@ Interdit :
 Si deux graphies proches coexistent dans le transcript, conserve celle utilisée dans le passage traité.
 Si un nom est douteux ou illisible, conserve la forme du transcript telle quelle : ne remplace pas.
 
+Distances
+
+Quand une distance de course apparaît, écris-la toujours ainsi : 1.600m, 1.200m, 2.400m (point des milliers, « m » collé, sans espace).
+
 Contrôle final
 
 Avant de répondre, vérifie silencieusement :
