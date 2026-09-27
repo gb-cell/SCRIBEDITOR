@@ -3,7 +3,6 @@
 import { useCallback, useState, type ReactNode } from "react";
 import { RacingScene } from "@/components/RacingScene";
 
-type Mode = "verbatim" | "correction" | "interview";
 type Screen = "input" | "result";
 
 type InterviewToolProps = {
@@ -17,7 +16,6 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
   const [originalTranscript, setOriginalTranscript] = useState<string | null>(
     null
   );
-  const [mode, setMode] = useState<Mode>("verbatim");
   const [screen, setScreen] = useState<Screen>("input");
   const [resultText, setResultText] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -29,7 +27,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
   const handleProcess = useCallback(async () => {
     const source = transcript.trim();
     if (!source) {
-      setError("Veuillez coller un texte avant de lancer le traitement.");
+      setError("Veuillez coller un transcript avant de lancer le traitement.");
       return;
     }
 
@@ -41,7 +39,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
       const response = await fetch("/api/process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcript: source, mode }),
+        body: JSON.stringify({ transcript: source, mode: "verbatim" }),
       });
 
       const data = (await response.json()) as {
@@ -60,7 +58,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
       if (!response.ok || !data.result) {
         setError(
           data.error ||
-            "Une erreur est survenue pendant le traitement. Votre texte n'a pas été modifié."
+            "Une erreur est survenue pendant le traitement. Votre transcript n'a pas été modifié."
         );
         return;
       }
@@ -74,7 +72,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
     } finally {
       setProcessing(false);
     }
-  }, [mode, transcript]);
+  }, [transcript]);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -92,26 +90,6 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
     setError(null);
     setCopyFeedback(false);
   }, []);
-
-  const inputLabel =
-    mode === "correction"
-      ? "Collez le texte à corriger (article, brève, verbatim…)."
-      : "Collez votre retranscription brute.";
-
-  const inputPlaceholder =
-    mode === "correction"
-      ? "Texte à corriger avant publication…"
-      : "Transcription, notes d'interview ou propos rapportés…";
-
-  const processingLabel =
-    mode === "correction"
-      ? "Correction du texte en cours…"
-      : "Traitement du verbatim en cours…";
-
-  const resultLabel =
-    mode === "correction"
-      ? "TEXTE CORRIGÉ"
-      : "VERBATIM — INTERVIEW APRÈS COURSE";
 
   return (
     <div className="shell">
@@ -143,9 +121,9 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         </header>
 
         {screen === "input" ? (
-          <section className="panel" aria-label="Saisie du texte">
+          <section className="panel" aria-label="Saisie du transcript">
             <label className="label" htmlFor="transcript">
-              {inputLabel}
+              Collez votre retranscription brute.
             </label>
             <textarea
               id="transcript"
@@ -155,49 +133,25 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 setTranscript(e.target.value);
                 if (error) setError(null);
               }}
-              placeholder={inputPlaceholder}
+              placeholder="Transcription, notes d'interview ou propos rapportés…"
               disabled={processing}
               spellCheck
             />
 
             <fieldset className="modes" disabled={processing}>
-              <legend className="label-caps">Mode de traitement</legend>
+              <legend className="label-caps">Mode</legend>
               <div className="mode-row">
                 <button
                   type="button"
-                  className={`mode-btn${mode === "verbatim" ? " active" : ""}`}
-                  aria-pressed={mode === "verbatim"}
-                  onClick={() => setMode("verbatim")}
+                  className="mode-btn active"
+                  aria-pressed={true}
                 >
                   INTERVIEW APRÈS COURSE
                 </button>
-                <button
-                  type="button"
-                  className={`mode-btn${mode === "correction" ? " active" : ""}`}
-                  aria-pressed={mode === "correction"}
-                  onClick={() => setMode("correction")}
-                >
-                  CORRECTION — TEXTE INTÉGRAL
-                </button>
-                <button
-                  type="button"
-                  className="mode-btn mode-btn-disabled"
-                  disabled
-                  aria-disabled="true"
-                  title="prompt 04D en attente de validation"
-                >
-                  Q / R — BIENTÔT
-                </button>
               </div>
-              {mode === "correction" ? (
-                <p className="mode-hint" role="status">
-                  Corrige le texte et renvoie la version intégrale corrigée.
-                </p>
-              ) : (
-                <p className="mode-hint" role="status">
-                  Transforme un transcript en verbatim à la 1ʳᵉ personne.
-                </p>
-              )}
+              <p className="mode-hint" role="status">
+                Prompt maître + 04B — verbatim à la première personne.
+              </p>
             </fieldset>
 
             {error && (
@@ -213,13 +167,15 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 onClick={handleProcess}
                 disabled={!canSubmit}
               >
-                {processing ? processingLabel : "TRAITER"}
+                {processing
+                  ? "Traitement du verbatim en cours…"
+                  : "TRAITER"}
               </button>
             </div>
 
             {originalTranscript !== null && !processing && (
               <p className="session-note">
-                Texte d&apos;origine conservé en mémoire de session (non
+                Transcript d&apos;origine conservé en mémoire de session (non
                 enregistré sur le serveur).
               </p>
             )}
@@ -229,7 +185,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
             <div className="result-head">
               <span className="finish-dot" aria-hidden="true" />
               <label className="label-caps" htmlFor="result">
-                {resultLabel}
+                VERBATIM — INTERVIEW APRÈS COURSE
               </label>
             </div>
             <textarea

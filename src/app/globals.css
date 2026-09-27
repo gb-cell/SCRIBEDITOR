@@ -358,12 +358,8 @@ body {
 
 .mode-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.75rem;
-}
-
-.mode-row .mode-btn:nth-child(3) {
-  grid-column: 1 / -1;
 }
 
 @media (max-width: 640px) {

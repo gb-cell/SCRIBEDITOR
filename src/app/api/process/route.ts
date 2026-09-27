@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import type { ProcessMode } from "@/lib/chunking";
 import { isAllowedEmail, isAuthDisabled } from "@/lib/auth-access";
-import { assertModeAvailable, processCorrection, processVerbatim } from "@/lib/process";
+import { assertModeAvailable, processVerbatim } from "@/lib/process";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -22,7 +22,6 @@ function frenchErrorMessage(error: unknown): string {
     if (msg.includes("04D") || msg.includes("bientôt disponible")) {
       return msg;
     }
-    // Clé invalide AVANT le test « vide » : le mot anglais "provided" contient "vide".
     if (
       msg.includes("401") ||
       /incorrect.*api.?key/i.test(msg) ||
@@ -50,7 +49,7 @@ function frenchErrorMessage(error: unknown): string {
     if (/timeout|ETIMEDOUT|ECONNRESET/i.test(msg)) {
       return "Le service OpenAI met trop de temps à répondre. Réessayez.";
     }
-    if (msg.includes("modèle n'a renvoyé")) {
+    if (msg.includes("modèle n'a renvoyé") || msg.includes("introuvable")) {
       return msg;
     }
 
@@ -106,7 +105,8 @@ export async function POST(request: Request) {
 
   const transcript =
     typeof body.transcript === "string" ? body.transcript.trim() : "";
-  const mode = body.mode as ProcessMode | undefined;
+  // Mode unique actif : interview après course (verbatim / 04B)
+  const mode = (body.mode as ProcessMode | undefined) ?? "verbatim";
 
   if (!transcript) {
     return NextResponse.json(
@@ -115,11 +115,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (
-    mode !== "verbatim" &&
-    mode !== "correction" &&
-    mode !== "interview"
-  ) {
+  if (mode !== "verbatim" && mode !== "interview") {
     return NextResponse.json(
       { error: "Mode de traitement non reconnu." },
       { status: 400 }
@@ -131,17 +127,6 @@ export async function POST(request: Request) {
 
     if (mode === "verbatim") {
       const result = await processVerbatim(transcript);
-
-      // Aucun log du contenu — on ne persiste rien côté serveur.
-      return NextResponse.json({
-        result: result.result,
-        passagesAVerifier: result.passagesAVerifier,
-        chunksProcessed: result.chunksProcessed,
-      });
-    }
-
-    if (mode === "correction") {
-      const result = await processCorrection(transcript);
 
       return NextResponse.json({
         result: result.result,

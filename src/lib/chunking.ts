@@ -1,12 +1,12 @@
 import { CHUNK_HARD_MAX_CHARS, CHUNK_TARGET_CHARS } from "./config";
 
-export type ProcessMode = "verbatim" | "correction" | "interview";
+export type ProcessMode = "verbatim" | "interview";
 
 /**
  * Découpe un texte long en unités conversationnelles (paragraphes / tours),
  * sans coupure naïve au milieu d'une phrase.
  *
- * Mode verbatim / correction : évite de séparer des passages portant sur le même sujet
+ * Mode verbatim : évite de séparer des passages portant sur le même sujet
  * (blocs adjacents regroupés jusqu'à la taille cible).
  *
  * Mode interview (Q/R, prêt pour 04D) : ne sépare jamais une question
@@ -113,13 +113,13 @@ function packUnits(units: string[], mode: ProcessMode): string[] {
     // Verbatim : on regroupe tant qu'on reste sous la limite dure
     // pour ne pas casser un même fil thématique trop tôt.
     const shouldMerge =
-      mode === "interview" ? underTarget : underHard && underTarget;
+      mode === "verbatim" ? underHard && underTarget : underTarget;
 
     if (shouldMerge) {
       current = candidate;
     } else if (
       underHard &&
-      mode !== "interview" &&
+      mode === "verbatim" &&
       current.length < CHUNK_TARGET_CHARS / 2
     ) {
       // Petit chunk précédent : encore un peu de marge pour coller le suivant
