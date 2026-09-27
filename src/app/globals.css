@@ -417,6 +417,17 @@ body {
   color: var(--ink-muted);
 }
 
+.mode-alone {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.mode-hint-inline {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
 .error {
   margin: 0;
   padding: 0.75rem 0.9rem;
