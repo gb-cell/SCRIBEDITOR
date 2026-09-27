@@ -138,21 +138,13 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               spellCheck
             />
 
-            <fieldset className="modes" disabled={processing}>
-              <legend className="label-caps">Mode</legend>
-              <div className="mode-row">
-                <button
-                  type="button"
-                  className="mode-btn active"
-                  aria-pressed={true}
-                >
-                  INTERVIEW APRÈS COURSE
-                </button>
-              </div>
-              <p className="mode-hint" role="status">
-                Prompt maître + 04B — verbatim à la première personne.
-              </p>
-            </fieldset>
+            <p className="mode-alone" role="status">
+              Mode : <strong>INTERVIEW APRÈS COURSE</strong>
+              <span className="mode-hint-inline">
+                {" "}
+                — prompt maître + 04B
+              </span>
+            </p>
 
             {error && (
               <p className="error" role="alert">
