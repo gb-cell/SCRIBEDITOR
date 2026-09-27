@@ -100,8 +100,9 @@ export async function processVerbatim(
 }
 
 /**
- * Mode 03B — CORRECTION (fautes, coquilles, maladresses).
- * Maître + 03B → remarques structurées. Pas de contrôle de fidélité verbatim.
+ * Mode 03B — CORRECTION : texte intégral corrigé (pas une liste de remarques).
+ * Le prompt maître dit « ne transforme pas une correction en réécriture » :
+ * on le suspend explicitement pour ce mode.
  */
 export async function processCorrection(
   text: string
@@ -125,6 +126,17 @@ export async function processCorrection(
     throw new Error("Le transcript est vide.");
   }
 
+  const overrideMaster = [
+    "EXCEPTION OBLIGATOIRE POUR CETTE TÂCHE (prioritaire sur le prompt maître) :",
+    "- Tu dois renvoyer le TEXTE INTÉGRAL corrigé, du début à la fin.",
+    "- Ce n'est PAS une simple liste de remarques « Original → Correction ».",
+    "- La règle du prompt maître « Lorsque je demande uniquement une correction, ne transforme pas le texte en réécriture » est SUSPENDUE ici.",
+    "- Ici, « correction » = produire le texte complet, correctement écrit (fautes, coquilles, accords, conjugaison, maladresses utiles), en conservant le fond et le style.",
+    "- N'invente aucune information. Ne remplace pas un nom de cheval par un nom plus célèbre.",
+  ].join("\n");
+
+  const systemContent = [overrideMaster, "", master, "", prompt03B].join("\n");
+
   const client = getOpenAIClient();
   const model = getModel();
   const parts: string[] = [];
@@ -133,27 +145,19 @@ export async function processCorrection(
     const chunk = chunks[i];
     const multi =
       chunks.length > 1
-        ? `\n\n(Partie ${i + 1}/${chunks.length} du texte — relis uniquement cette partie. Si une catégorie est vide pour cette partie, ne l'affiche pas.)`
+        ? `\n\n(Partie ${i + 1}/${chunks.length} — corrige UNIQUEMENT cette partie en texte intégral corrigé, sans liste de remarques.)`
         : "";
 
     const response = await client.chat.completions.create({
       model,
       temperature: 0.2,
       messages: [
-        { role: "system", content: master },
+        { role: "system", content: systemContent },
         {
           role: "user",
           content: [
-            prompt03B,
-            "",
-            "---",
-            "",
-            "Applique strictement le prompt maître (message system) ET les consignes 03B ci-dessus.",
-            "Mission : renvoyer le TEXTE INTÉGRAL corrigé (orthographe, grammaire, accords, conjugaison, coquilles, maladresses utiles).",
-            "Ne fournis PAS une liste de remarques. Fournis le texte complet, correctement écrit, du début à la fin.",
-            "Conserve le style et toutes les informations utiles. N'invente rien.",
-            "Noms de chevaux : ne remplace pas par un nom plus célèbre ; corrige seulement une coquille évidente.",
-            "Pas de préambule. Si besoin, une rubrique « À vérifier » UNIQUEMENT après le texte.",
+            "Corrige le texte ci-dessous et renvoie UNIQUEMENT le texte intégral corrigé (pas de préambule, pas de liste de fautes).",
+            "Si vraiment nécessaire, ajoute après le texte une rubrique « À vérifier » très courte.",
             "",
             "Texte à corriger :",
             "",
@@ -169,12 +173,7 @@ export async function processCorrection(
         `Le modèle n'a renvoyé aucun texte pour la partie ${i + 1}/${chunks.length}.`
       );
     }
-    const cleaned = stripModelChrome(content);
-    if (chunks.length > 1) {
-      parts.push(`### Partie ${i + 1}/${chunks.length}\n\n${cleaned}`);
-    } else {
-      parts.push(cleaned);
-    }
+    parts.push(stripModelChrome(content));
   }
 
   const corrected = parts.join("\n\n").trim();
