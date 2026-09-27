@@ -191,8 +191,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               </div>
               {mode === "correction" ? (
                 <p className="mode-hint" role="status">
-                  Réécrit le texte en entier, correctement (fautes, coquilles,
-                  maladresses).
+                  Corrige le texte et renvoie la version intégrale corrigée.
                 </p>
               ) : (
                 <p className="mode-hint" role="status">

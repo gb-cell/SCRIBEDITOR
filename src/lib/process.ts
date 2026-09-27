@@ -100,21 +100,15 @@ export async function processVerbatim(
 }
 
 /**
- * Mode 03B — CORRECTION : texte intégral corrigé (pas une liste de remarques).
- * Le prompt maître dit « ne transforme pas une correction en réécriture » :
- * on le suspend explicitement pour ce mode.
+ * Mode 03B — CORRECTION : texte intégral corrigé uniquement.
+ * On n'envoie PAS le prompt maître ici : sa règle « ne réécris pas en correction »
+ * contredit 03B et produit des résultats incohérents.
  */
 export async function processCorrection(
   text: string
 ): Promise<ProcessResult> {
-  const master = loadMasterPrompt();
   const prompt03B = loadPrompt03B();
 
-  if (!master || master.length < 100) {
-    throw new Error(
-      "Prompt maître introuvable ou incomplet (prompts/prompt-maitre.txt)."
-    );
-  }
   if (!prompt03B || prompt03B.length < 100) {
     throw new Error(
       "Prompt 03B introuvable ou incomplet (prompts/prompt-03B.txt)."
@@ -126,17 +120,6 @@ export async function processCorrection(
     throw new Error("Le transcript est vide.");
   }
 
-  const overrideMaster = [
-    "EXCEPTION OBLIGATOIRE POUR CETTE TÂCHE (prioritaire sur le prompt maître) :",
-    "- Tu dois renvoyer le TEXTE INTÉGRAL corrigé, du début à la fin.",
-    "- Ce n'est PAS une simple liste de remarques « Original → Correction ».",
-    "- La règle du prompt maître « Lorsque je demande uniquement une correction, ne transforme pas le texte en réécriture » est SUSPENDUE ici.",
-    "- Ici, « correction » = produire le texte complet, correctement écrit (fautes, coquilles, accords, conjugaison, maladresses utiles), en conservant le fond et le style.",
-    "- N'invente aucune information. Ne remplace pas un nom de cheval par un nom plus célèbre.",
-  ].join("\n");
-
-  const systemContent = [overrideMaster, "", master, "", prompt03B].join("\n");
-
   const client = getOpenAIClient();
   const model = getModel();
   const parts: string[] = [];
@@ -145,21 +128,19 @@ export async function processCorrection(
     const chunk = chunks[i];
     const multi =
       chunks.length > 1
-        ? `\n\n(Partie ${i + 1}/${chunks.length} — corrige UNIQUEMENT cette partie en texte intégral corrigé, sans liste de remarques.)`
+        ? `\n\n(Partie ${i + 1}/${chunks.length} — renvoie uniquement cette partie corrigée en texte intégral.)`
         : "";
 
     const response = await client.chat.completions.create({
       model,
-      temperature: 0.2,
+      temperature: 0.1,
       messages: [
-        { role: "system", content: systemContent },
+        { role: "system", content: prompt03B },
         {
           role: "user",
           content: [
-            "Corrige le texte ci-dessous et renvoie UNIQUEMENT le texte intégral corrigé (pas de préambule, pas de liste de fautes).",
-            "Si vraiment nécessaire, ajoute après le texte une rubrique « À vérifier » très courte.",
-            "",
-            "Texte à corriger :",
+            "Corrige le texte suivant.",
+            "Réponds UNIQUEMENT avec le texte intégral corrigé (aucun commentaire, aucune liste de fautes).",
             "",
             chunk + multi,
           ].join("\n"),
@@ -173,7 +154,7 @@ export async function processCorrection(
         `Le modèle n'a renvoyé aucun texte pour la partie ${i + 1}/${chunks.length}.`
       );
     }
-    parts.push(stripModelChrome(content));
+    parts.push(stripCorrectionChrome(content));
   }
 
   const corrected = parts.join("\n\n").trim();
@@ -181,19 +162,8 @@ export async function processCorrection(
     throw new Error("Le modèle n'a renvoyé aucun texte corrigé.");
   }
 
-  // Texte corrigé en premier ; original conservé en bas pour comparaison.
-  const result = [
-    corrected,
-    "",
-    "---",
-    "TEXTE D'ORIGINE",
-    "---",
-    "",
-    text.trim(),
-  ].join("\n");
-
   return {
-    result,
+    result: corrected,
     passagesAVerifier: [],
     chunksProcessed: chunks.length,
   };
@@ -206,6 +176,18 @@ function stripModelChrome(text: string): string {
     .replace(/\s*```$/i, "")
     .replace(
       /^(Voici\s+(le\s+)?verbatim[^:\n]*:\s*|Verbatim\s*(finalisé|final|nettoyé)\s*:\s*)/i,
+      ""
+    )
+    .trim();
+}
+
+/** Retire préambules typiques du mode correction. */
+function stripCorrectionChrome(text: string): string {
+  return text
+    .replace(/^```(?:text|markdown)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .replace(
+      /^(Voici\s+(le\s+)?texte\s+corrigé[^:\n]*:\s*|Texte\s+corrigé\s*:\s*|Version\s+corrigée\s*:\s*)/i,
       ""
     )
     .trim();
