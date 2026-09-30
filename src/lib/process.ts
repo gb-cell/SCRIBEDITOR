@@ -145,7 +145,7 @@ async function runChunk(
 ): Promise<string> {
   const modeHint =
     mode === "conference"
-      ? "Mode conférence de presse : traite le collage Zoom ENTIER, extrais toutes les réponses utiles, ne te limite pas à une seule phrase s'il y en a d'autres."
+      ? "Mode conférence de presse : parcours TOUT le Zoom. Un bloc ### par intervenant qui a répondu. Ne t'arrête pas au premier. N'invente pas de bloc pour quelqu'un qui n'a pas encore parlé."
       : "Mode interview après course : verbatim à la première personne.";
 
   const forceLine = force

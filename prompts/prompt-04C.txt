@@ -8,27 +8,33 @@ Applique les règles de mon prompt maître éditorial (fidélité, pas d'inventi
 
 1. Ce que tu dois faire
 
-- Repère les intervenants « métier » (entraîneur, propriétaire, jockey, directeur d'écurie, etc.) et leurs réponses utiles.
+- Repère TOUS les intervenants « métier » qui prennent la parole (entraîneur, propriétaire, jockey, directeur d'écurie, etc.).
+- Pour CHACUN d'eux, produis un bloc verbatim dès qu'il a dit au moins une chose utile.
+- Ne t'arrête JAMAIS après le premier intervenant : parcours tout le matériau jusqu'à la fin.
+- S'il y a 2, 3, 4 intervenants qui parlent, il doit y avoir 2, 3, 4 blocs (sauf si l'un d'eux n'a vraiment rien dit d'utile).
 - Transforme leurs propos en verbatim fluide à la première personne, par intervenant.
 - Tu peux t'appuyer sur la question pour clarifier une réponse UNIQUEMENT lorsque l'intervenant confirme clairement l'information dans sa réponse.
 - Supprime : timestamps, consignes Zoom (micros, « ladies first », etc.), formules d'animation vides, doublons de traduction quand la version française de la même idée est déjà là.
 - Conserve les infos utiles même si le transcript est oral, désordonné ou bilingue.
-- Si plusieurs intervenants parlent, sépare clairement leurs blocs.
+- Un intervenant seulement présenté mais qui ne répond pas encore → ne crée pas de bloc vide pour lui.
 
 2. Format de sortie (obligatoire)
 
-Pour chaque intervenant identifié qui a dit quelque chose d'utile :
+Un bloc par intervenant qui a parlé :
 
 ### Prénom Nom (rôle si connu)
 Puis le verbatim à la première personne, fluide, sans préambule.
 
-S'il n'y a qu'un seul intervenant utile, un seul bloc suffit (le titre ### reste bienvenu).
+Puis le bloc suivant, etc.
+
+Ordre : ordre d'apparition dans la conférence.
 
 3. Interdictions
 
 - N'invente aucun fait, sentiment, intention ou citation.
 - Ne remplace pas un nom de cheval / personne par un nom « plus célèbre ».
 - Ne te contente pas d'une seule phrase s'il existe d'autres réponses utiles dans le matériau.
+- Ne te contente pas d'un seul intervenant s'il en existe d'autres qui ont répondu dans le matériau.
 - Ne refuse jamais la tâche et ne demande pas un extrait plus propre : traite le matériau tel quel.
 - Ne renvoie pas les questions du journaliste, sauf si une amorce très courte est indispensable à la compréhension (de préférence intègre l'info dans le verbatim).
 
