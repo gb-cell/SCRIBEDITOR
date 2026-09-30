@@ -3,6 +3,7 @@ import path from "path";
 import {
   EMBEDDED_03B,
   EMBEDDED_04B,
+  EMBEDDED_04C,
   EMBEDDED_04D,
   EMBEDDED_MASTER,
 } from "./prompt-content";
@@ -37,6 +38,10 @@ export function loadMasterPrompt(): string {
 
 export function loadPrompt04B(): string {
   return readPrompt("prompt-04B.txt", EMBEDDED_04B, 100);
+}
+
+export function loadPrompt04C(): string {
+  return readPrompt("prompt-04C.txt", EMBEDDED_04C, 100);
 }
 
 export function loadPrompt03B(): string {

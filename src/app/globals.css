@@ -362,8 +362,13 @@ body {
   gap: 0.75rem;
 }
 
+.mode-row-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
 @media (max-width: 640px) {
-  .mode-row {
+  .mode-row,
+  .mode-row-2 {
     grid-template-columns: 1fr;
   }
 

@@ -3,6 +3,7 @@
 import { useCallback, useState, type ReactNode } from "react";
 import { RacingScene } from "@/components/RacingScene";
 
+type Mode = "verbatim" | "conference";
 type Screen = "input" | "result";
 
 type InterviewToolProps = {
@@ -12,10 +13,10 @@ type InterviewToolProps = {
 
 export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
   const [transcript, setTranscript] = useState("");
-  /** Conservé en mémoire client uniquement (session) — jamais persisté. */
   const [originalTranscript, setOriginalTranscript] = useState<string | null>(
     null
   );
+  const [mode, setMode] = useState<Mode>("verbatim");
   const [screen, setScreen] = useState<Screen>("input");
   const [resultText, setResultText] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -41,14 +42,13 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         headers: { "Content-Type": "application/json" },
         cache: "no-store",
         credentials: "same-origin",
-        body: JSON.stringify({ transcript: source, mode: "verbatim" }),
+        body: JSON.stringify({ transcript: source, mode }),
       });
 
       const data = (await response.json()) as {
         result?: string;
         error?: string;
         sourcePreview?: string;
-        sourceLength?: number;
       };
 
       if (response.status === 401 || response.status === 403) {
@@ -67,7 +67,6 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         return;
       }
 
-      // Garde-fou : le serveur doit avoir reçu le bon début de texte
       if (
         data.sourcePreview &&
         !source.startsWith(data.sourcePreview.slice(0, 40))
@@ -87,7 +86,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
     } finally {
       setProcessing(false);
     }
-  }, [transcript]);
+  }, [mode, transcript]);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -138,7 +137,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         {screen === "input" ? (
           <section className="panel" aria-label="Saisie du transcript">
             <label className="label" htmlFor="transcript">
-              Collez votre retranscription brute.
+              Collez votre retranscription brute (ITV ou Zoom entier).
             </label>
             <textarea
               id="transcript"
@@ -148,18 +147,37 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 setTranscript(e.target.value);
                 if (error) setError(null);
               }}
-              placeholder="Transcription, notes d'interview ou propos rapportés…"
+              placeholder="Transcription Zoom, notes d'interview ou propos rapportés…"
               disabled={processing}
               spellCheck
             />
 
-            <p className="mode-alone" role="status">
-              Mode : <strong>INTERVIEW APRÈS COURSE</strong>
-              <span className="mode-hint-inline">
-                {" "}
-                — prompt maître + 04B
-              </span>
-            </p>
+            <fieldset className="modes" disabled={processing}>
+              <legend className="label-caps">Mode</legend>
+              <div className="mode-row mode-row-2">
+                <button
+                  type="button"
+                  className={`mode-btn${mode === "verbatim" ? " active" : ""}`}
+                  aria-pressed={mode === "verbatim"}
+                  onClick={() => setMode("verbatim")}
+                >
+                  INTERVIEW APRÈS COURSE
+                </button>
+                <button
+                  type="button"
+                  className={`mode-btn${mode === "conference" ? " active" : ""}`}
+                  aria-pressed={mode === "conference"}
+                  onClick={() => setMode("conference")}
+                >
+                  CONFÉRENCE DE PRESSE / ZOOM
+                </button>
+              </div>
+              <p className="mode-hint" role="status">
+                {mode === "conference"
+                  ? "Colle tout le Zoom tel quel — extrait les réponses utiles, sans tri manuel."
+                  : "ITV d’un intervenant — verbatim à la 1ʳᵉ personne (prompt 04B)."}
+              </p>
+            </fieldset>
 
             {error && (
               <p className="error" role="alert">
@@ -175,7 +193,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
                 disabled={!canSubmit}
               >
                 {processing
-                  ? "Traitement du verbatim en cours…"
+                  ? "Traitement en cours…"
                   : "TRAITER"}
               </button>
             </div>
@@ -192,7 +210,9 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
             <div className="result-head">
               <span className="finish-dot" aria-hidden="true" />
               <label className="label-caps" htmlFor="result">
-                VERBATIM — INTERVIEW APRÈS COURSE
+                {mode === "conference"
+                  ? "VERBATIMS — CONFÉRENCE DE PRESSE"
+                  : "VERBATIM — INTERVIEW APRÈS COURSE"}
               </label>
             </div>
             <textarea

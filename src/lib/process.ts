@@ -1,7 +1,11 @@
 import { chunkTranscript, type ProcessMode } from "./chunking";
 import { getModel } from "./config";
 import { getOpenAIClient } from "./openai";
-import { loadMasterPrompt, loadPrompt04B } from "./prompts";
+import {
+  loadMasterPrompt,
+  loadPrompt04B,
+  loadPrompt04C,
+} from "./prompts";
 
 export type ProcessResult = {
   result: string;
@@ -12,30 +16,57 @@ export type ProcessResult = {
 const REFUSAL_RE =
   /je (ne )?peux pas|je suis désolé|manque des informations|texte ne soit pas complet|pourrais-tu (me )?fournir|extrait plus détaillé|je ne suis pas en mesure/i;
 
-/** Noms qui ont « collé » à tort chez des utilisateurs — refusés s'ils absents du transcript. */
 const STICKY_NAMES = ["dwyer", "asfora", "henry dwyer"];
 
 /**
- * Interview après course : prompt maître (system) + 04B + matériau (user).
+ * Interview après course : maître + 04B + matériau.
  */
 export async function processVerbatim(
   transcript: string
 ): Promise<ProcessResult> {
+  return runPromptPipeline({
+    transcript,
+    mode: "verbatim",
+    taskPrompt: loadPrompt04B(),
+    taskLabel: "04B",
+  });
+}
+
+/**
+ * Conférence de presse / Zoom : maître + 04C + matériau brut entier.
+ */
+export async function processConference(
+  transcript: string
+): Promise<ProcessResult> {
+  return runPromptPipeline({
+    transcript,
+    mode: "conference",
+    taskPrompt: loadPrompt04C(),
+    taskLabel: "04C",
+  });
+}
+
+async function runPromptPipeline(opts: {
+  transcript: string;
+  mode: "verbatim" | "conference";
+  taskPrompt: string;
+  taskLabel: string;
+}): Promise<ProcessResult> {
   const master = loadMasterPrompt();
-  const prompt04B = loadPrompt04B();
+  const taskPrompt = opts.taskPrompt;
 
   if (!master || master.length < 100) {
     throw new Error(
       "Prompt maître introuvable ou incomplet (prompts/prompt-maitre.txt)."
     );
   }
-  if (!prompt04B || prompt04B.length < 100) {
+  if (!taskPrompt || taskPrompt.length < 100) {
     throw new Error(
-      "Prompt 04B introuvable ou incomplet (prompts/prompt-04B.txt)."
+      `Prompt ${opts.taskLabel} introuvable ou incomplet.`
     );
   }
 
-  const chunks = chunkTranscript(transcript, "verbatim");
+  const chunks = chunkTranscript(opts.transcript, opts.mode);
   if (chunks.length === 0) {
     throw new Error("Le transcript est vide.");
   }
@@ -51,26 +82,37 @@ export async function processVerbatim(
         ? `${chunk}\n\n[Partie ${i + 1}/${chunks.length}]`
         : chunk;
 
-    let content = await runChunk(client, model, master, prompt04B, material);
+    let content = await runChunk(
+      client,
+      model,
+      master,
+      taskPrompt,
+      material,
+      opts.mode
+    );
 
-    if (REFUSAL_RE.test(content) || isOffTopicSticky(transcript, content)) {
+    if (
+      REFUSAL_RE.test(content) ||
+      isOffTopicSticky(opts.transcript, content)
+    ) {
       content = await runChunk(
         client,
         model,
         master,
-        prompt04B,
+        taskPrompt,
         material,
+        opts.mode,
         true
       );
     }
 
     if (!content || REFUSAL_RE.test(content)) {
       throw new Error(
-        "Le modèle a refusé de traiter ce transcript. Réessayez ou allongez légèrement le texte."
+        "Le modèle a refusé de traiter ce transcript. Réessayez."
       );
     }
 
-    if (isOffTopicSticky(transcript, content)) {
+    if (isOffTopicSticky(opts.transcript, content)) {
       throw new Error(
         "Résultat hors sujet détecté (texte ne correspondant pas au transcript). Réessayez."
       );
@@ -96,17 +138,23 @@ async function runChunk(
   client: ReturnType<typeof getOpenAIClient>,
   model: string,
   master: string,
-  prompt04B: string,
+  taskPrompt: string,
   material: string,
+  mode: "verbatim" | "conference",
   force = false
 ): Promise<string> {
+  const modeHint =
+    mode === "conference"
+      ? "Mode conférence de presse : traite le collage Zoom ENTIER, extrais toutes les réponses utiles, ne te limite pas à une seule phrase s'il y en a d'autres."
+      : "Mode interview après course : verbatim à la première personne.";
+
   const forceLine = force
     ? [
         "",
         "RAPPEL STRICT :",
-        "- Produis immédiatement le verbatim à la première personne.",
+        "- Produis immédiatement le résultat demandé.",
         "- Utilise UNIQUEMENT le matériau entre <<<MATERIAU>>> et <<<FIN>>>.",
-        "- Interdit d'importer un autre interview, d'autres noms (chevaux, jockeys, entraîneurs) absents du matériau.",
+        "- Interdit d'importer un autre interview ou des noms absents du matériau.",
         "- Aucun refus, aucune question, aucun commentaire.",
       ].join("\n")
     : "";
@@ -119,10 +167,11 @@ async function runChunk(
       {
         role: "user",
         content: [
-          prompt04B,
+          taskPrompt,
           "",
           "---",
           "",
+          modeHint,
           "Transforme UNIQUEMENT le matériau ci-dessous. N'utilise aucun autre souvenir d'interview.",
           "",
           "<<<MATERIAU>>>",

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import type { ProcessMode } from "@/lib/chunking";
 import { isAllowedEmail, isAuthDisabled } from "@/lib/auth-access";
-import { assertModeAvailable, processVerbatim } from "@/lib/process";
+import { assertModeAvailable, processConference, processVerbatim } from "@/lib/process";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -126,7 +126,11 @@ export async function POST(request: Request) {
     );
   }
 
-  if (mode !== "verbatim" && mode !== "interview") {
+  if (
+    mode !== "verbatim" &&
+    mode !== "conference" &&
+    mode !== "interview"
+  ) {
     return NextResponse.json(
       { error: "Mode de traitement non reconnu." },
       { status: 400, headers: NO_STORE }
@@ -136,15 +140,17 @@ export async function POST(request: Request) {
   try {
     assertModeAvailable(mode);
 
-    if (mode === "verbatim") {
-      const result = await processVerbatim(transcript);
+    if (mode === "verbatim" || mode === "conference") {
+      const result =
+        mode === "conference"
+          ? await processConference(transcript)
+          : await processVerbatim(transcript);
 
       return NextResponse.json(
         {
           result: result.result,
           passagesAVerifier: result.passagesAVerifier,
           chunksProcessed: result.chunksProcessed,
-          // Contrôle anti-cache / anti-mauvais texte : début du transcript traité
           sourcePreview: transcript.slice(0, 120),
           sourceLength: transcript.length,
         },

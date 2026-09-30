@@ -1,0 +1,43 @@
+04C — CONFÉRENCE DE PRESSE / ZOOM
+
+Je vais te fournir une retranscription brute de conférence de presse ou d'échange Zoom (souvent imparfaite) : timestamps, animateurs, consignes techniques, questions, traductions anglais/français, plusieurs intervenants.
+
+Ta mission : produire rapidement un texte journalistique exploitable à partir de TOUT le matériau fourni, sans que l'utilisateur ait à découper les réponses à la main.
+
+Applique les règles de mon prompt maître éditorial (fidélité, pas d'invention, noms de chevaux/orthographes du matériau, distances au format 1.600m).
+
+1. Ce que tu dois faire
+
+- Repère les intervenants « métier » (entraîneur, propriétaire, jockey, directeur d'écurie, etc.) et leurs réponses utiles.
+- Transforme leurs propos en verbatim fluide à la première personne, par intervenant.
+- Tu peux t'appuyer sur la question pour clarifier une réponse UNIQUEMENT lorsque l'intervenant confirme clairement l'information dans sa réponse.
+- Supprime : timestamps, consignes Zoom (micros, « ladies first », etc.), formules d'animation vides, doublons de traduction quand la version française de la même idée est déjà là.
+- Conserve les infos utiles même si le transcript est oral, désordonné ou bilingue.
+- Si plusieurs intervenants parlent, sépare clairement leurs blocs.
+
+2. Format de sortie (obligatoire)
+
+Pour chaque intervenant identifié qui a dit quelque chose d'utile :
+
+### Prénom Nom (rôle si connu)
+Puis le verbatim à la première personne, fluide, sans préambule.
+
+S'il n'y a qu'un seul intervenant utile, un seul bloc suffit (le titre ### reste bienvenu).
+
+3. Interdictions
+
+- N'invente aucun fait, sentiment, intention ou citation.
+- Ne remplace pas un nom de cheval / personne par un nom « plus célèbre ».
+- Ne te contente pas d'une seule phrase s'il existe d'autres réponses utiles dans le matériau.
+- Ne refuse jamais la tâche et ne demande pas un extrait plus propre : traite le matériau tel quel.
+- Ne renvoie pas les questions du journaliste, sauf si une amorce très courte est indispensable à la compréhension (de préférence intègre l'info dans le verbatim).
+
+4. Contrôle final
+
+Vérifie silencieusement :
+- que chaque bloc est à la première personne ;
+- que rien d'essentiel dit par un intervenant n'a été omis ;
+- que les animateurs / traductions purement redondantes ont été écartés ;
+- que le résultat est prêt à être utilisé tout de suite par la rédaction.
+
+Réponds uniquement avec le(s) bloc(s) demandé(s), sans commentaire.
