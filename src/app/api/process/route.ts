@@ -5,11 +5,18 @@ import { isAllowedEmail, isAuthDisabled } from "@/lib/auth-access";
 import { assertModeAvailable, processVerbatim } from "@/lib/process";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 export const maxDuration = 120;
 
 type RequestBody = {
   transcript?: unknown;
   mode?: unknown;
+};
+
+const NO_STORE = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
 };
 
 function frenchErrorMessage(error: unknown): string {
@@ -49,7 +56,12 @@ function frenchErrorMessage(error: unknown): string {
     if (/timeout|ETIMEDOUT|ECONNRESET/i.test(msg)) {
       return "Le service OpenAI met trop de temps à répondre. Réessayez.";
     }
-    if (msg.includes("modèle n'a renvoyé") || msg.includes("introuvable")) {
+    if (
+      msg.includes("modèle n'a renvoyé") ||
+      msg.includes("introuvable") ||
+      msg.includes("refusé") ||
+      msg.includes("hors sujet")
+    ) {
       return msg;
     }
 
@@ -71,7 +83,7 @@ async function requireAuthorizedSession(): Promise<NextResponse | null> {
         error:
           "Connexion requise. Reconnectez-vous avec votre compte @jourdegalop.com.",
       },
-      { status: 401 }
+      { status: 401, headers: NO_STORE }
     );
   }
 
@@ -81,7 +93,7 @@ async function requireAuthorizedSession(): Promise<NextResponse | null> {
         error:
           "Accès refusé. Seules les adresses @jourdegalop.com sont autorisées.",
       },
-      { status: 403 }
+      { status: 403, headers: NO_STORE }
     );
   }
 
@@ -99,26 +111,25 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       { error: "Requête invalide." },
-      { status: 400 }
+      { status: 400, headers: NO_STORE }
     );
   }
 
   const transcript =
     typeof body.transcript === "string" ? body.transcript.trim() : "";
-  // Mode unique actif : interview après course (verbatim / 04B)
   const mode = (body.mode as ProcessMode | undefined) ?? "verbatim";
 
   if (!transcript) {
     return NextResponse.json(
       { error: "Veuillez coller un transcript avant de lancer le traitement." },
-      { status: 400 }
+      { status: 400, headers: NO_STORE }
     );
   }
 
   if (mode !== "verbatim" && mode !== "interview") {
     return NextResponse.json(
       { error: "Mode de traitement non reconnu." },
-      { status: 400 }
+      { status: 400, headers: NO_STORE }
     );
   }
 
@@ -128,11 +139,17 @@ export async function POST(request: Request) {
     if (mode === "verbatim") {
       const result = await processVerbatim(transcript);
 
-      return NextResponse.json({
-        result: result.result,
-        passagesAVerifier: result.passagesAVerifier,
-        chunksProcessed: result.chunksProcessed,
-      });
+      return NextResponse.json(
+        {
+          result: result.result,
+          passagesAVerifier: result.passagesAVerifier,
+          chunksProcessed: result.chunksProcessed,
+          // Contrôle anti-cache / anti-mauvais texte : début du transcript traité
+          sourcePreview: transcript.slice(0, 120),
+          sourceLength: transcript.length,
+        },
+        { headers: NO_STORE }
+      );
     }
 
     return NextResponse.json(
@@ -140,7 +157,7 @@ export async function POST(request: Request) {
         error:
           "Mode bientôt disponible — prompt 04D en attente de validation",
       },
-      { status: 503 }
+      { status: 503, headers: NO_STORE }
     );
   } catch (error) {
     const message = frenchErrorMessage(error);
@@ -149,6 +166,9 @@ export async function POST(request: Request) {
         ? 503
         : 500;
 
-    return NextResponse.json({ error: message }, { status });
+    return NextResponse.json(
+      { error: message },
+      { status, headers: NO_STORE }
+    );
   }
 }

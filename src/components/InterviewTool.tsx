@@ -36,15 +36,19 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
     setOriginalTranscript(source);
 
     try {
-      const response = await fetch("/api/process", {
+      const response = await fetch(`/api/process?t=${Date.now()}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        credentials: "same-origin",
         body: JSON.stringify({ transcript: source, mode: "verbatim" }),
       });
 
       const data = (await response.json()) as {
         result?: string;
         error?: string;
+        sourcePreview?: string;
+        sourceLength?: number;
       };
 
       if (response.status === 401 || response.status === 403) {
@@ -59,6 +63,17 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         setError(
           data.error ||
             "Une erreur est survenue pendant le traitement. Votre transcript n'a pas été modifié."
+        );
+        return;
+      }
+
+      // Garde-fou : le serveur doit avoir reçu le bon début de texte
+      if (
+        data.sourcePreview &&
+        !source.startsWith(data.sourcePreview.slice(0, 40))
+      ) {
+        setError(
+          "Incohérence détectée (mauvais texte traité — possible cache). Réessayez après Cmd+Shift+R."
         );
         return;
       }

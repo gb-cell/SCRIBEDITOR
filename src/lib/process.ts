@@ -12,6 +12,9 @@ export type ProcessResult = {
 const REFUSAL_RE =
   /je (ne )?peux pas|je suis désolé|manque des informations|texte ne soit pas complet|pourrais-tu (me )?fournir|extrait plus détaillé|je ne suis pas en mesure/i;
 
+/** Noms qui ont « collé » à tort chez des utilisateurs — refusés s'ils absents du transcript. */
+const STICKY_NAMES = ["dwyer", "asfora", "henry dwyer"];
+
 /**
  * Interview après course : prompt maître (system) + 04B + matériau (user).
  */
@@ -50,8 +53,7 @@ export async function processVerbatim(
 
     let content = await runChunk(client, model, master, prompt04B, material);
 
-    // Si le modèle refuse (comportement hors prompt), un second passage forcé.
-    if (REFUSAL_RE.test(content)) {
+    if (REFUSAL_RE.test(content) || isOffTopicSticky(transcript, content)) {
       content = await runChunk(
         client,
         model,
@@ -68,6 +70,12 @@ export async function processVerbatim(
       );
     }
 
+    if (isOffTopicSticky(transcript, content)) {
+      throw new Error(
+        "Résultat hors sujet détecté (texte ne correspondant pas au transcript). Réessayez."
+      );
+    }
+
     parts.push(content);
   }
 
@@ -76,6 +84,12 @@ export async function processVerbatim(
     passagesAVerifier: [],
     chunksProcessed: chunks.length,
   };
+}
+
+function isOffTopicSticky(input: string, output: string): boolean {
+  const src = input.toLowerCase();
+  const out = output.toLowerCase();
+  return STICKY_NAMES.some((name) => out.includes(name) && !src.includes(name));
 }
 
 async function runChunk(
@@ -87,7 +101,14 @@ async function runChunk(
   force = false
 ): Promise<string> {
   const forceLine = force
-    ? "\n\nRAPPEL : produis immédiatement le verbatim. Aucun refus, aucune question, aucun commentaire."
+    ? [
+        "",
+        "RAPPEL STRICT :",
+        "- Produis immédiatement le verbatim à la première personne.",
+        "- Utilise UNIQUEMENT le matériau entre <<<MATERIAU>>> et <<<FIN>>>.",
+        "- Interdit d'importer un autre interview, d'autres noms (chevaux, jockeys, entraîneurs) absents du matériau.",
+        "- Aucun refus, aucune question, aucun commentaire.",
+      ].join("\n")
     : "";
 
   const response = await client.chat.completions.create({
@@ -97,7 +118,18 @@ async function runChunk(
       { role: "system", content: master },
       {
         role: "user",
-        content: `${prompt04B}\n\n---\n\n${material}${forceLine}`,
+        content: [
+          prompt04B,
+          "",
+          "---",
+          "",
+          "Transforme UNIQUEMENT le matériau ci-dessous. N'utilise aucun autre souvenir d'interview.",
+          "",
+          "<<<MATERIAU>>>",
+          material,
+          "<<<FIN>>>",
+          forceLine,
+        ].join("\n"),
       },
     ],
   });
@@ -106,7 +138,6 @@ async function runChunk(
   return stripFence(raw);
 }
 
-/** Retire uniquement les fences markdown éventuelles. */
 function stripFence(text: string): string {
   return text
     .replace(/^```(?:text|markdown)?\s*/i, "")

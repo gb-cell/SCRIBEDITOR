@@ -21,6 +21,25 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
+  // API : jamais de redirect HTML (sinon le POST perd son corps / reçoit une page login)
+  if (path.startsWith("/api/")) {
+    if (!isLoggedIn) {
+      return NextResponse.json(
+        {
+          error:
+            "Connexion requise. Reconnectez-vous avec votre compte @jourdegalop.com.",
+        },
+        {
+          status: 401,
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        }
+      );
+    }
+    return NextResponse.next();
+  }
+
   if (!isLoggedIn) {
     const login = new URL("/login", req.nextUrl.origin);
     if (path !== "/") {
