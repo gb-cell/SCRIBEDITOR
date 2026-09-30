@@ -145,7 +145,7 @@ async function runChunk(
 ): Promise<string> {
   const modeHint =
     mode === "conference"
-      ? "Mode conférence de presse : restitue TOUS les échanges utiles (questions + réponses), dans l'ordre, du début à la fin. Pas un seul verbatim isolé. Pas de résumé global."
+      ? "Mode unique — tous les échanges : questions + réponses, dans l'ordre, pour 1, 2, 3, 4 voix ou plus. Inclus chaque intervenant qui a parlé. Pas de résumé, pas d'omission."
       : "Mode interview après course : verbatim à la première personne.";
 
   const forceLine = force

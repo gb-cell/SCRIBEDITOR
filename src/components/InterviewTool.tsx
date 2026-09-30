@@ -135,8 +135,8 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
         {screen === "input" ? (
           <section className="panel" aria-label="Saisie du transcript">
             <label className="label" htmlFor="transcript">
-              Collez la retranscription brute (ITV, Zoom, 1 ou plusieurs
-              intervenants).
+              Collez la retranscription brute (ITV, Zoom — 1, 2, 3 voix ou
+              plus).
             </label>
             <textarea
               id="transcript"
@@ -155,8 +155,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               Mode unique : <strong>tous les échanges</strong>
               <span className="mode-hint-inline">
                 {" "}
-                — questions + réponses, 1 ou plusieurs voix (prompt maître +
-                04C)
+                — questions + réponses, toutes les voix (1 ou plusieurs)
               </span>
             </p>
 

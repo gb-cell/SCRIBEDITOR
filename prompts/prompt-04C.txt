@@ -1,6 +1,6 @@
 04C — TOUS LES ÉCHANGES (ITV / CONFÉRENCE / ZOOM)
 
-Je vais te fournir une retranscription brute : interview après course, conférence de presse ou Zoom (souvent imparfaite) — timestamps, animateurs, consignes techniques, questions, traductions, un ou plusieurs intervenants.
+Je vais te fournir une retranscription brute : interview après course, conférence de presse ou Zoom (souvent imparfaite) — timestamps, animateurs, consignes techniques, questions, traductions, et un nombre quelconque d'intervenants (1, 2, 3, 4 ou davantage).
 
 Ta mission : produire le compte rendu COMPLET de TOUS les échanges utiles — questions + réponses — prêt à publier / à exploiter tout de suite.
 
@@ -10,34 +10,40 @@ Applique les règles de mon prompt maître éditorial (fidélité, pas d'inventi
 
 - Parcours le matériau DU DÉBUT À LA FIN.
 - Restitue TOUS les échanges utiles : questions + réponses, dans l'ordre.
-- 1 intervenant ou plusieurs : même logique. S'il n'y a qu'une voix, restitue quand même toutes ses Q/R.
-- Inclus chaque intervenant métier dès qu'il parle (entraîneur, propriétaire, jockey, directeur d'écurie, etc.).
+- Nombre de voix : 1, 2, 3, 4 ou plus — même logique. Inclus CHAQUE intervenant métier dès qu'il parle. Ne t'arrête jamais après le premier ou le deuxième.
+- S'il n'y a qu'une seule voix, restitue quand même toutes ses Q/R.
+- Intervenants métier typiques : entraîneur, propriétaire, jockey, directeur d'écurie, etc.
 - Mets les réponses des intervenants à la première personne, de façon fluide.
 - Les questions restent formulées comme des questions (préfixe « Journaliste : » ou nom de l'animateur si clairement identifiable).
 - Supprime uniquement le bruit : timestamps, consignes Zoom/micros, formules techniques vides, doublons de traduction anglais quand le français dit déjà la même chose.
 
 2. Format de sortie (obligatoire)
 
-Enchaîne chronologiquement :
+Enchaîne chronologiquement, par exemple :
 
 Journaliste : …
-Francis-Henri Graffard : …
+Intervenant A : …
 Journaliste : …
-Némo Nérousse : …
+Intervenant B : …
+Journaliste : …
+Intervenant C : …
 
-(Adapte les noms aux vrais intervenants du matériau.)
+(Adapte les noms aux vrais intervenants du matériau — autant de locuteurs qu'il y en a réellement.)
 
 3. Interdictions
 
 - N'invente aucun fait, sentiment, intention ou citation.
 - Ne remplace pas un nom de cheval / personne par un nom « plus célèbre ».
-- Ne te limite pas au premier intervenant ni à la première réponse.
+- Ne te limite pas au premier intervenant, ni aux deux premiers, ni à la première réponse.
 - Ne résume pas en un seul paragraphe s'il existe plusieurs échanges.
 - Ne refuse jamais la tâche et ne demande pas un extrait plus propre.
 - Ne renvoie pas les consignes Zoom.
 
 4. Contrôle final
 
-Vérifie silencieusement que chaque échange utile apparaît, dans l'ordre, avec les réponses à la 1ʳᵉ personne.
+Vérifie silencieusement :
+- que chaque échange utile apparaît, dans l'ordre ;
+- que chaque voix qui a répondu a bien ses tours ;
+- que les réponses sont à la 1ʳᵉ personne.
 
 Réponds uniquement avec les échanges nettoyés, sans commentaire.
