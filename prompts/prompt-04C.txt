@@ -1,49 +1,58 @@
-04C — CONFÉRENCE DE PRESSE / ZOOM
+04C — CONFÉRENCE DE PRESSE / ZOOM — TOUS LES ÉCHANGES
 
 Je vais te fournir une retranscription brute de conférence de presse ou d'échange Zoom (souvent imparfaite) : timestamps, animateurs, consignes techniques, questions, traductions anglais/français, plusieurs intervenants.
 
-Ta mission : produire rapidement un texte journalistique exploitable à partir de TOUT le matériau fourni, sans que l'utilisateur ait à découper les réponses à la main.
+Ta mission : produire le compte rendu COMPLET et exploitable de TOUS les échanges utiles du matériau — pas un seul extrait, pas un seul intervenant.
 
 Applique les règles de mon prompt maître éditorial (fidélité, pas d'invention, noms de chevaux/orthographes du matériau, distances au format 1.600m).
 
 1. Ce que tu dois faire
 
-- Repère TOUS les intervenants « métier » qui prennent la parole (entraîneur, propriétaire, jockey, directeur d'écurie, etc.).
-- Pour CHACUN d'eux, produis un bloc verbatim dès qu'il a dit au moins une chose utile.
-- Ne t'arrête JAMAIS après le premier intervenant : parcours tout le matériau jusqu'à la fin.
-- S'il y a 2, 3, 4 intervenants qui parlent, il doit y avoir 2, 3, 4 blocs (sauf si l'un d'eux n'a vraiment rien dit d'utile).
-- Transforme leurs propos en verbatim fluide à la première personne, par intervenant.
-- Tu peux t'appuyer sur la question pour clarifier une réponse UNIQUEMENT lorsque l'intervenant confirme clairement l'information dans sa réponse.
-- Supprime : timestamps, consignes Zoom (micros, « ladies first », etc.), formules d'animation vides, doublons de traduction quand la version française de la même idée est déjà là.
-- Conserve les infos utiles même si le transcript est oral, désordonné ou bilingue.
-- Un intervenant seulement présenté mais qui ne répond pas encore → ne crée pas de bloc vide pour lui.
+- Parcours le matériau DU DÉBUT À LA FIN.
+- Restitue TOUS les échanges utiles : questions + réponses, dans l'ordre.
+- Inclus chaque intervenant métier dès qu'il parle (entraîneur, propriétaire, jockey, directeur d'écurie, etc.).
+- Inclus les questions du journaliste / de l'animateur lorsqu'elles portent le fond (pas les consignes Zoom).
+- Mets les réponses des intervenants à la première personne, de façon fluide.
+- Les questions restent formulées comme des questions (ou « Journaliste : … »).
+- Supprime uniquement le bruit : timestamps (0:00), consignes micros/Zoom, formules techniques vides, doublons de traduction anglais quand le français dit déjà la même chose.
+- Ne saute aucun échange utile. S'il y a dix Q/R, il doit y avoir dix Q/R (ou l'équivalent nettoyé).
 
 2. Format de sortie (obligatoire)
 
-Un bloc par intervenant qui a parlé :
+Enchaîne chronologiquement, par exemple :
 
-### Prénom Nom (rôle si connu)
-Puis le verbatim à la première personne, fluide, sans préambule.
+Journaliste : …
+Francis-Henri Graffard : …
+Journaliste : …
+Némo Nérousse : …
 
-Puis le bloc suivant, etc.
+Ou, si plus lisible :
 
-Ordre : ordre d'apparition dans la conférence.
+### Échange 1
+Q : …
+R (Francis-Henri Graffard) : … (à la 1ʳᵉ personne)
+
+### Échange 2
+…
+
+Choisis UNE de ces deux présentations et garde-la jusqu'au bout.
+L'important : TOUS les échanges utiles, dans l'ordre, sans en oublier.
 
 3. Interdictions
 
 - N'invente aucun fait, sentiment, intention ou citation.
 - Ne remplace pas un nom de cheval / personne par un nom « plus célèbre ».
-- Ne te contente pas d'une seule phrase s'il existe d'autres réponses utiles dans le matériau.
-- Ne te contente pas d'un seul intervenant s'il en existe d'autres qui ont répondu dans le matériau.
-- Ne refuse jamais la tâche et ne demande pas un extrait plus propre : traite le matériau tel quel.
-- Ne renvoie pas les questions du journaliste, sauf si une amorce très courte est indispensable à la compréhension (de préférence intègre l'info dans le verbatim).
+- Ne te limite pas au premier intervenant ni à la première réponse.
+- Ne résume pas la conférence en un seul paragraphe si plusieurs échanges existent.
+- Ne refuse jamais la tâche et ne demande pas un extrait plus propre.
+- Ne renvoie pas les consignes Zoom (« éteignez vos micros », etc.).
 
 4. Contrôle final
 
-Vérifie silencieusement :
-- que chaque bloc est à la première personne ;
-- que rien d'essentiel dit par un intervenant n'a été omis ;
-- que les animateurs / traductions purement redondantes ont été écartés ;
-- que le résultat est prêt à être utilisé tout de suite par la rédaction.
+Avant de répondre, vérifie silencieusement :
+- que chaque réponse utile du matériau apparaît ;
+- que l'ordre chronologique est respecté ;
+- que les réponses des intervenants sont à la 1ʳᵉ personne ;
+- que rien d'essentiel n'a été omis faute de « synthèse ».
 
-Réponds uniquement avec le(s) bloc(s) demandé(s), sans commentaire.
+Réponds uniquement avec les échanges nettoyés, sans commentaire.

@@ -174,7 +174,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               </div>
               <p className="mode-hint" role="status">
                 {mode === "conference"
-                  ? "Colle tout le Zoom tel quel — extrait les réponses utiles, sans tri manuel."
+                  ? "Colle tout le Zoom — restitue tous les échanges (Q + R), nettoyés, dans l’ordre."
                   : "ITV d’un intervenant — verbatim à la 1ʳᵉ personne (prompt 04B)."}
               </p>
             </fieldset>
@@ -211,7 +211,7 @@ export function InterviewTool({ userEmail, signOutSlot }: InterviewToolProps) {
               <span className="finish-dot" aria-hidden="true" />
               <label className="label-caps" htmlFor="result">
                 {mode === "conference"
-                  ? "VERBATIMS — CONFÉRENCE DE PRESSE"
+                  ? "ÉCHANGES — CONFÉRENCE DE PRESSE"
                   : "VERBATIM — INTERVIEW APRÈS COURSE"}
               </label>
             </div>
