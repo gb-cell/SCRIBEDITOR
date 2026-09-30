@@ -1,8 +1,8 @@
-04C — CONFÉRENCE DE PRESSE / ZOOM — TOUS LES ÉCHANGES
+04C — TOUS LES ÉCHANGES (ITV / CONFÉRENCE / ZOOM)
 
-Je vais te fournir une retranscription brute de conférence de presse ou d'échange Zoom (souvent imparfaite) : timestamps, animateurs, consignes techniques, questions, traductions anglais/français, plusieurs intervenants.
+Je vais te fournir une retranscription brute : interview après course, conférence de presse ou Zoom (souvent imparfaite) — timestamps, animateurs, consignes techniques, questions, traductions, un ou plusieurs intervenants.
 
-Ta mission : produire le compte rendu COMPLET et exploitable de TOUS les échanges utiles du matériau — pas un seul extrait, pas un seul intervenant.
+Ta mission : produire le compte rendu COMPLET de TOUS les échanges utiles — questions + réponses — prêt à publier / à exploiter tout de suite.
 
 Applique les règles de mon prompt maître éditorial (fidélité, pas d'invention, noms de chevaux/orthographes du matériau, distances au format 1.600m).
 
@@ -10,49 +10,34 @@ Applique les règles de mon prompt maître éditorial (fidélité, pas d'inventi
 
 - Parcours le matériau DU DÉBUT À LA FIN.
 - Restitue TOUS les échanges utiles : questions + réponses, dans l'ordre.
+- 1 intervenant ou plusieurs : même logique. S'il n'y a qu'une voix, restitue quand même toutes ses Q/R.
 - Inclus chaque intervenant métier dès qu'il parle (entraîneur, propriétaire, jockey, directeur d'écurie, etc.).
-- Inclus les questions du journaliste / de l'animateur lorsqu'elles portent le fond (pas les consignes Zoom).
 - Mets les réponses des intervenants à la première personne, de façon fluide.
-- Les questions restent formulées comme des questions (ou « Journaliste : … »).
-- Supprime uniquement le bruit : timestamps (0:00), consignes micros/Zoom, formules techniques vides, doublons de traduction anglais quand le français dit déjà la même chose.
-- Ne saute aucun échange utile. S'il y a dix Q/R, il doit y avoir dix Q/R (ou l'équivalent nettoyé).
+- Les questions restent formulées comme des questions (préfixe « Journaliste : » ou nom de l'animateur si clairement identifiable).
+- Supprime uniquement le bruit : timestamps, consignes Zoom/micros, formules techniques vides, doublons de traduction anglais quand le français dit déjà la même chose.
 
 2. Format de sortie (obligatoire)
 
-Enchaîne chronologiquement, par exemple :
+Enchaîne chronologiquement :
 
 Journaliste : …
 Francis-Henri Graffard : …
 Journaliste : …
 Némo Nérousse : …
 
-Ou, si plus lisible :
-
-### Échange 1
-Q : …
-R (Francis-Henri Graffard) : … (à la 1ʳᵉ personne)
-
-### Échange 2
-…
-
-Choisis UNE de ces deux présentations et garde-la jusqu'au bout.
-L'important : TOUS les échanges utiles, dans l'ordre, sans en oublier.
+(Adapte les noms aux vrais intervenants du matériau.)
 
 3. Interdictions
 
 - N'invente aucun fait, sentiment, intention ou citation.
 - Ne remplace pas un nom de cheval / personne par un nom « plus célèbre ».
 - Ne te limite pas au premier intervenant ni à la première réponse.
-- Ne résume pas la conférence en un seul paragraphe si plusieurs échanges existent.
+- Ne résume pas en un seul paragraphe s'il existe plusieurs échanges.
 - Ne refuse jamais la tâche et ne demande pas un extrait plus propre.
-- Ne renvoie pas les consignes Zoom (« éteignez vos micros », etc.).
+- Ne renvoie pas les consignes Zoom.
 
 4. Contrôle final
 
-Avant de répondre, vérifie silencieusement :
-- que chaque réponse utile du matériau apparaît ;
-- que l'ordre chronologique est respecté ;
-- que les réponses des intervenants sont à la 1ʳᵉ personne ;
-- que rien d'essentiel n'a été omis faute de « synthèse ».
+Vérifie silencieusement que chaque échange utile apparaît, dans l'ordre, avec les réponses à la 1ʳᵉ personne.
 
 Réponds uniquement avec les échanges nettoyés, sans commentaire.
