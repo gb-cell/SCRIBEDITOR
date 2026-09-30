@@ -117,7 +117,7 @@ export async function POST(request: Request) {
 
   const transcript =
     typeof body.transcript === "string" ? body.transcript.trim() : "";
-  const mode = (body.mode as ProcessMode | undefined) ?? "verbatim";
+  const mode = (body.mode as ProcessMode | undefined) ?? "conference";
 
   if (!transcript) {
     return NextResponse.json(
@@ -126,6 +126,7 @@ export async function POST(request: Request) {
     );
   }
 
+  // Mode unique côté produit : tous les échanges (04C). verbatim conservé en API pour compat.
   if (
     mode !== "verbatim" &&
     mode !== "conference" &&
@@ -142,9 +143,9 @@ export async function POST(request: Request) {
 
     if (mode === "verbatim" || mode === "conference") {
       const result =
-        mode === "conference"
-          ? await processConference(transcript)
-          : await processVerbatim(transcript);
+        mode === "verbatim"
+          ? await processVerbatim(transcript)
+          : await processConference(transcript);
 
       return NextResponse.json(
         {
